@@ -20,6 +20,7 @@ export const config: PonderConfig = {
       abi: "./abis/GenArt721CoreV3.json",
       address: "0x99a9B7c1116f9ceEB1652de04d5969CcE509B069",
       startBlock: 15726706,
+      blockLimit: 1000,
     },
   ],
 };
