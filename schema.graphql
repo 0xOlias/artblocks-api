@@ -1,0 +1,12 @@
+type ArtBlocksProject @entity {
+  id: ID!
+  projectId: Int!
+  name: String!
+  artistName: String!
+  description: String!
+  website: String!
+  license: String!
+  scriptType: String!
+  script: String!
+  aspectRatio: String!
+}
