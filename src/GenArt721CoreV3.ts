@@ -4,11 +4,12 @@ import { Context } from "../generated/app";
 
 ponder.on("GenArt721CoreV3:ProjectUpdated", async ({ event, context }) => {
   // Only run when the ProjectUpdated event is called with _update = "script".
+  // See https://github.com/ArtBlocks/artblocks-subgraph and https://github.com/ArtBlocks/artblocks-contracts.
   if (event.params._update !== utils.formatBytes32String("script")) {
     return;
   }
 
-  // // Refresh V1 project data once per run.
+  // Refresh V1 project data once per run.
   const V1_REFRESH_BLOCK_NUMBER = 16582214;
   if (event.block.number === V1_REFRESH_BLOCK_NUMBER) {
     console.log("Fetching V1 project data...");
@@ -19,6 +20,13 @@ ponder.on("GenArt721CoreV3:ProjectUpdated", async ({ event, context }) => {
     event.params._projectId,
     { blockTag: event.block.number }
   );
+
+  // If project is "Cerebellum", skip because the script contains a sequence of characters
+  // cannot be persisted by Postgres.
+  if (projectDetails.projectName === "Cerebellum") {
+    return;
+  }
+
   const scriptDetails =
     await context.contracts.GenArt721CoreV3.projectScriptDetails(
       event.params._projectId,
